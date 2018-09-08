@@ -30,7 +30,7 @@ glob(fileGlob, async (err, files) => {
             const file = files[i];
             const fileContents = await readFile(file);
             const hash = farmhash.hash32(fileContents).toString();
-            await addToPastec(file, hash);
+            await addToPastec(file, hash).catch((err) => console.log(file));
         } catch (e) {
             console.log(file);
         }

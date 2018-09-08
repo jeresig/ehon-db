@@ -1,21 +1,23 @@
 {
   "name": "ehon-db",
   "version": "0.0.1",
-  "description": "The files in this directory were copied from https://github.com/Khan/khan-linter/tree/60889f7a1c86e9eb7f3154184a89504a3d2163f8.",
-  "main": "index.js",
+  "description": "",
+  "main": "mongaku.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "./mongaku/build/bin/mongaku.js start",
+    "stop": "./mongaku/build/bin/mongaku.js stop",
+    "restart": "./mongaku/build/bin/mongaku.js restart",
+    "dev": "./mongaku/build/bin/mongaku.js dev",
+    "create-index": "./mongaku/build/bin/mongaku.js create index",
+    "build": "cp -R ./mongaku/static/ static/ && ./mongaku/node_modules/.bin/webpack --config ./mongaku/webpack.config.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jeresig/ehon-db.git"
   },
   "author": "John Resig <jeresig@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jeresig/ehon-db/issues"
-  },
-  "homepage": "https://github.com/jeresig/ehon-db#readme",
+  "license": "All Rights Reserved",
+  "homepage": "https://github.com/jeresig/ehon-db",
   "dependencies": {
     "JSONStream": "^1.3.4",
     "cli-progress": "^2.1.0",
