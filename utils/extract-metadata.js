@@ -82,18 +82,28 @@ fs.createReadStream("./all-in-one.json.gz")
     .on("end", () => {
         console.log("Filtering out missing images...");
 
-        const filteredResults = results.filter((data) => {
-            if (!data.source) {
-                return false;
-            }
+        const filteredResults = results
+            .filter((data) => {
+                if (!data.source) {
+                    return false;
+                }
 
-            // Check if the image has been downloaded
-            data.images = data.images.filter((imgName) =>
-                fs.existsSync(`./sorted-images/${data.source}/${imgName}`),
-            );
+                // Check if the image has been downloaded
+                data.images = data.images
+                    .filter(
+                        (imgName) =>
+                            !/[a-z].jpg/.test(imgName) &&
+                            !/\([A-Z]\)/.test(imgName),
+                    )
+                    .filter((imgName) =>
+                        fs.existsSync(
+                            `./sorted-images/${data.source}/${imgName}`,
+                        ),
+                    );
 
-            return data.images.length > 0;
-        });
+                return data.images.length > 0;
+            })
+            .sort((a, b) => a.id.localeCompare(b.id));
 
         const genres = {};
         const sources = {};

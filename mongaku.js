@@ -319,6 +319,11 @@ module.exports = {
 
             filters: ["genres"],
 
+            sorts: {
+                "created.asc": (i18n) => i18n.gettext("Oldest first"),
+                "created.desc": (i18n) => i18n.gettext("Added recently"),
+            },
+
             model: {
                 // The title of the record.
                 title: {
@@ -340,6 +345,12 @@ module.exports = {
                     values: genres,
                     multiple: true,
                     filterMultiple: true,
+                },
+
+                url: {
+                    type: "URL",
+                    title: (i18n) => i18n.gettext("More details"),
+                    recommended: true,
                 },
             },
         },
