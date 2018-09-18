@@ -304,6 +304,7 @@ const genres = [
     "黄表紙",
     "黄表紙？",
     "黒本",
+    "Fairy tale",
 ];
 
 module.exports = {
@@ -318,6 +319,7 @@ module.exports = {
             name: (i18n) => i18n.gettext("Books"),
 
             filters: ["genres"],
+            display: ["title", "creator", "genres"],
 
             sorts: {
                 "created.asc": (i18n) => i18n.gettext("Oldest first"),
