@@ -6,6 +6,7 @@ const port = 4213;
 const servers = ["http://localhost:4212"];
 const cacheFile = "pastec-cache.json";
 const cacheSaveRate = 2 * 60 * 1000;
+const returnEmptyForMissed = true;
 
 let cache = {};
 let cacheChanged = false;
@@ -19,14 +20,26 @@ if (fs.existsSync(cacheFile)) {
 const proxy = httpProxy.createProxyServer();
 
 const server = http.createServer((req, res) => {
-    if (req.method === "GET" && cache[req.url]) {
-        console.log("Cached:", req.url);
+    if (req.method === "GET" && req.url.indexOf("/index/images/") >= 0) {
+        if (cache[req.url]) {
+            console.log("Cached:", req.url);
 
-        // Respond from cache
-        res.writeHead(200, {"Content-Type": "application/json"});
-        res.write(cache[req.url]);
-        res.end();
-        return;
+            // Respond from cache
+            res.writeHead(200, {"Content-Type": "application/json"});
+            res.write(cache[req.url]);
+            res.end();
+            return;
+        } else if (returnEmptyForMissed) {
+            console.log("Cache Miss:", req.url);
+
+            // Create a fake response
+            res.writeHead(200, {"Content-Type": "application/json"});
+            res.write(
+                '{"bounding_rects":[],"image_ids":[],"scores":[],"type":"SEARCH_RESULTS"}\n',
+            );
+            res.end();
+            return;
+        }
     }
 
     proxy.web(req, res, {target: servers[curServer % servers.length]});
@@ -35,7 +48,7 @@ const server = http.createServer((req, res) => {
 });
 
 proxy.on("proxyRes", (proxyRes, req) => {
-    if (req.method === "GET") {
+    if (req.method === "GET" && req.url.indexOf("/index/images/") >= 0) {
         console.log("Caching:", req.url);
 
         proxyRes.setEncoding("utf8");
@@ -43,6 +56,8 @@ proxy.on("proxyRes", (proxyRes, req) => {
             cacheChanged = true;
             cache[req.url] = data;
         });
+    } else {
+        console.log(req.method, req.url);
     }
 });
 
