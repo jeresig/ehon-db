@@ -377,6 +377,7 @@ module.exports = {
         books: {
             imagesRequired: true,
             allowDirectoryUpload: true,
+            bookStyleComparison: true,
 
             name: (i18n) => i18n.gettext("Books"),
 
