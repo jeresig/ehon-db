@@ -307,9 +307,71 @@ const genres = [
     "Fairy tale",
 ];
 
+const trimID = (id) => id.replace(/\d+(?:\([a-z]\))?[a-z]?.jpg/i, "");
+
 module.exports = {
     getTitle: (i18n) => i18n.gettext("Ehon Database"),
     getShortTitle: (i18n) => i18n.gettext("Ehon"),
+
+    filterImageSimilarity(sourceImage, matches) {
+        // Filter out matches that are from the same artwork
+        // This is a rough heuristic and will work for most images
+        const sourceID = trimID(sourceImage._id);
+        let newMatches = matches.filter(
+            ({image}) => sourceID !== trimID(image._id),
+        );
+
+        // Let some really obscure matches through
+        if (newMatches.length < 3) {
+            return newMatches;
+        }
+
+        // Must be at least a 5% match otherwise
+        newMatches = matches.filter(({score}) => score >= 5);
+
+        // Filter out images that have too many remaining matches
+        // 10 is arbitrarily picked here.
+        if (newMatches.length >= 10) {
+            return [];
+        }
+
+        return newMatches;
+    },
+
+    filterRecordSimilarity(sourceRecord, sourceImages, similarRecord) {
+        // If there are only a few images then we just assume that it's
+        // an authentic match
+        if (sourceImages.length < 3 || similarRecord.images.length < 3) {
+            return true;
+        }
+
+        // We find out how many images, except the first and the last, have
+        // a similar match
+        const matches = sourceImages
+            .filter((image, i) => i > 0 && i < sourceImages.length - 1)
+            .filter((image) => image.similarImages.length > 0);
+
+        // If there are no matches from the other images then we just ignore
+        // all of the similar records
+        if (matches.length === 0) {
+            return false;
+        }
+
+        // Get just the matching IDs of the remaining images
+        const matchIds = matches
+            .map((image) => image.similarImages)
+            .reduce((a, b) => a.concat(b), [])
+            .map((image) => image._id);
+
+        // Filter to records that only match non-first/last images
+        return (
+            similarRecord.images
+                .filter(
+                    (image, i) => i > 0 && i < similarRecord.images.length - 1,
+                )
+                .filter((image) => matchIds.includes(image)).length > 0
+        );
+    },
 
     types: {
         books: {
