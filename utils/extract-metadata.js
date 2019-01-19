@@ -89,17 +89,11 @@ fs.createReadStream("./all-in-one.json.gz")
                 }
 
                 // Check if the image has been downloaded
-                data.images = data.images
-                    .filter(
-                        (imgName) =>
-                            !/[a-z].jpg/.test(imgName) &&
-                            !/\([A-Z]\)/.test(imgName),
-                    )
-                    .filter((imgName) =>
-                        fs.existsSync(
-                            `./sorted-images/${data.source}/${imgName}`,
-                        ),
-                    );
+                data.images = data.images.filter(
+                    (imgName) =>
+                        !/[a-z].jpg/.test(imgName) &&
+                        !/\([A-Z]\)/.test(imgName),
+                );
 
                 return data.images.length > 0;
             })
