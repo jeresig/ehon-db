@@ -1,4 +1,4 @@
 MONGODB_URL=mongodb://localhost/ehon
 PASTEC_URL=localhost:4212
-BASE_DATA_URL=https://s3.us-west-1.wasabisys.com/ehon
+BASE_DATA_URL=/data
 BASE_UPLOAD_URL=/data
