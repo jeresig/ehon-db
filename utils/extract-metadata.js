@@ -9,7 +9,7 @@ const results = [];
 
 const fieldMapping = {
     f1: "id",
-    f4: "title",
+    f3: "title",
     f7: "creator",
     f9: "genres",
     //f11: "date",
