@@ -9,6 +9,9 @@
     "restart": "./mongaku/build/bin/mongaku.js restart",
     "dev": "./mongaku/build/bin/mongaku.js dev",
     "create-index": "./mongaku/build/bin/mongaku.js create index",
+    "create-user": "./mongaku/build/bin/mongaku.js create user",
+    "create-admin": "./mongaku/build/bin/mongaku.js create admin",
+    "create-source": "./mongaku/build/bin/mongaku.js create source",
     "build": "cp -R ./mongaku/static/ static/ && ./mongaku/node_modules/.bin/webpack --config ./mongaku/webpack.config.js"
   },
   "repository": {
