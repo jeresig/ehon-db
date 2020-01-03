@@ -313,6 +313,10 @@ module.exports = {
     getTitle: (i18n) => i18n.gettext("Ehon Database"),
     getShortTitle: (i18n) => i18n.gettext("Ehon"),
 
+    converters: {
+        default: require("./utils/converter.js"),
+    },
+
     filterImageSimilarity(sourceImage, matches) {
         // Filter out matches that are from the same artwork
         // This is a rough heuristic and will work for most images
