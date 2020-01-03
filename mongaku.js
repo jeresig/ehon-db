@@ -414,6 +414,7 @@ module.exports = {
                     values: genres,
                     multiple: true,
                     filterMultiple: true,
+                    allowUnknown: true,
                 },
 
                 url: {
